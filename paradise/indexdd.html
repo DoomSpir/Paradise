@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☁️ Paradise</title>
+<script src="data/all.js"></script>
+<script src="tmp/config.js"></script>
+<script src="tmp/bundle.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;min-height:100vh;overflow-x:hidden;background:linear-gradient(180deg,#4aa8e8 0%,#7dc3f0 15%,#a8d8f5 30%,#c9e8ff 50%,#e4f3ff 70%,#f2f9ff 85%,#fff 100%);color:#1a2a4a}
+:root{--glass-bg:rgba(255,255,255,0.4);--glass-hover:rgba(255,255,255,0.7);--accent:#ff8c00;--accent-light:#ffb040;--t1:#1a2a4a;--t2:#3a5a8a;--t3:#6a8aaa;--a1:#2a5fa8}
+
+.clouds-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.cloud{position:absolute;background:rgba(255,255,255,0.55);border-radius:50px;animation:driftCloud linear infinite}
+.cloud::before,.cloud::after{content:'';position:absolute;background:inherit;border-radius:50%}
+.cloud::before{width:60%;height:140%;top:-40%;left:10%}
+.cloud::after{width:40%;height:120%;top:-30%;right:10%}
+@keyframes driftCloud{from{transform:translateX(-300px)}to{transform:translateX(calc(100vw + 300px))}}
+.c1{width:200px;height:50px;top:8%;animation-duration:55s;opacity:.5}
+.c2{width:280px;height:65px;top:18%;animation-duration:70s;animation-delay:-20s;opacity:.4}
+.c3{width:160px;height:45px;top:30%;animation-duration:45s;animation-delay:-10s;opacity:.45}
+.c4{width:320px;height:75px;top:5%;animation-duration:80s;animation-delay:-35s;opacity:.35}
+.c5{width:140px;height:40px;top:40%;animation-duration:40s;animation-delay:-5s;opacity:.35}
+.c6{width:240px;height:60px;top:22%;animation-duration:65s;animation-delay:-50s;opacity:.4}
+
+.sparkles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.spark{position:absolute;background:rgba(255,255,255,0.9);border-radius:50%;animation:twinkle 3s ease-in-out infinite;box-shadow:0 0 10px rgba(255,255,255,0.8)}
+@keyframes twinkle{0%,100%{opacity:.2;transform:scale(0.8)}50%{opacity:1;transform:scale(1.5)}}
+
+.top-nav{position:fixed;top:24px;left:50%;transform:translateX(-50%);width:90%;max-width:1100px;background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.8);border-radius:50px;display:flex;justify-content:space-between;align-items:center;padding:12px 24px;z-index:100;box-shadow:0 10px 40px rgba(0,0,0,0.08)}
+.nav-brand{font-size:1.5rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:8px}
+.nav-item{text-decoration:none;color:var(--t1);font-weight:600;font-size:0.95rem;padding:10px 18px;border-radius:50px;transition:all 0.3s;display:flex;align-items:center;gap:8px;cursor:pointer;border:none;background:none;font-family:inherit}
+.nav-item:hover,.nav-item.active{background:white;color:var(--accent);box-shadow:0 4px 15px rgba(0,0,0,0.05)}
+.nav-item i{color:var(--t3);transition:color 0.3s}
+.nav-item:hover i,.nav-item.active i{color:var(--accent)}
+.nav-actions{display:flex;gap:12px}
+.action-btn{width:42px;height:42px;border-radius:50%;background:white;border:none;color:var(--t2);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow:0 4px 10px rgba(0,0,0,0.05)}
+.action-btn:hover{color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 15px rgba(0,0,0,0.1)}
+
+/* PAGE SECTIONS */
+.page-section{display:none;position:relative;z-index:10}
+.page-section.active{display:block}
+
+/* HOME */
+.main-wrapper{max-width:1400px;margin:0 auto;height:100vh;padding-top:100px;display:flex;align-items:center}
+.content-left{flex:1;padding:0 60px}
+.version-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(255,255,255,0.5);border:1px solid white;border-radius:50px;font-weight:700;font-size:0.85rem;color:var(--a1);margin-bottom:24px;backdrop-filter:blur(5px)}
+.main-title{font-size:clamp(3rem,5vw,4.5rem);font-weight:900;line-height:1.1;color:white;text-shadow:0 10px 30px rgba(0,0,0,0.1);margin-bottom:20px}
+.gradient-text{background:linear-gradient(135deg,var(--accent),var(--accent-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:1.2rem;color:var(--t1);line-height:1.6;margin-bottom:40px;max-width:90%;font-weight:500}
+.primary-btn{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;border:none;padding:18px 40px;border-radius:50px;font-size:1.1rem;font-weight:700;font-family:inherit;cursor:pointer;box-shadow:0 10px 25px rgba(255,140,0,0.4);transition:all 0.3s;display:inline-flex;align-items:center;gap:12px}
+.primary-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 15px 35px rgba(255,140,0,0.5)}
+.chips-container{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+.feature-chip{padding:10px 20px;background:var(--glass-bg);border:1px solid rgba(255,255,255,0.7);border-radius:16px;color:var(--t1);font-weight:600;font-size:0.9rem;backdrop-filter:blur(10px);display:flex;align-items:center;gap:8px;cursor:default;transition:all 0.3s}
+.feature-chip i{color:var(--a1)}
+.feature-chip:hover{background:white;transform:translateY(-2px)}
+
+.content-right{flex:1.2;display:flex;justify-content:center;align-items:center;gap:24px;height:100%}
+.card-col{display:flex;flex-direction:column;gap:24px}
+.col-1{animation:float1 6s ease-in-out infinite alternate;margin-top:-60px}
+.col-2{animation:float2 7s ease-in-out infinite alternate;margin-top:60px}
+.col-3{animation:float3 8s ease-in-out infinite alternate;margin-top:-20px}
+@keyframes float1{from{transform:translateY(0)}to{transform:translateY(-20px)}}
+@keyframes float2{from{transform:translateY(0)}to{transform:translateY(25px)}}
+@keyframes float3{from{transform:translateY(0)}to{transform:translateY(-15px)}}
+
+.game-card{width:220px;height:280px;border-radius:30px;background:var(--glass-bg);backdrop-filter:blur(10px);border:2px solid rgba(255,255,255,0.8);box-shadow:0 15px 35px rgba(0,0,0,0.1);position:relative;overflow:hidden;cursor:pointer;transition:all 0.4s;display:flex;flex-direction:column}
+.game-card:hover{transform:scale(1.05) translateY(-10px)!important;box-shadow:0 25px 45px rgba(0,0,0,0.15);border-color:white;z-index:20}
+.card-bg{position:absolute;inset:0;z-index:0;transition:transform 0.5s}
+.game-card:hover .card-bg{transform:scale(1.1)}
+.card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.6) 0%,transparent 60%);z-index:1}
+.card-info{position:absolute;bottom:0;left:0;right:0;padding:20px;z-index:2}
+.card-title{color:white;font-size:1.3rem;font-weight:800;line-height:1.2;text-shadow:0 2px 10px rgba(0,0,0,0.4)}
+.card-category{color:rgba(255,255,255,0.9);font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+.card-icon{position:absolute;top:20px;right:20px;font-size:3rem;z-index:2;opacity:0.9;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2))}
+.bg-purple{background:linear-gradient(135deg,#a18cd1,#fbc2eb)}
+.bg-green{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.bg-orange{background:linear-gradient(135deg,#f6d365,#fda085)}
+.bg-blue{background:linear-gradient(135deg,#84fab0,#8fd3f4)}
+.bg-red{background:linear-gradient(135deg,#ff0844,#ffb199)}
+.bg-dark{background:linear-gradient(135deg,#667eea,#764ba2)}
+
+/* GAMES PAGE */
+.games-page{padding:110px 40px 40px;max-width:1400px;margin:0 auto;min-height:100vh}
+.games-header{margin-bottom:30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.games-header h1{font-size:2.5rem;font-weight:900;color:white;text-shadow:0 4px 20px rgba(0,0,0,0.15)}
+.games-header h1 span{color:var(--accent)}
+.search-box{display:flex;align-items:center;background:rgba(255,255,255,0.6);backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,0.8);border-radius:50px;padding:12px 24px;gap:12px;width:360px;transition:all 0.3s}
+.search-box:focus-within{background:rgba(255,255,255,0.85);box-shadow:0 8px 30px rgba(0,0,0,0.1)}
+.search-box i{color:var(--t3);font-size:1.1rem}
+.search-box input{border:none;background:none;font-family:inherit;font-size:1rem;font-weight:500;color:var(--t1);outline:none;width:100%}
+.search-box input::placeholder{color:var(--t3)}
+
+.cat-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.cat-btn{padding:8px 20px;border-radius:50px;border:2px solid rgba(255,255,255,0.7);background:rgba(255,255,255,0.35);backdrop-filter:blur(8px);color:var(--t1);font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.3s;font-family:inherit}
+.cat-btn:hover,.cat-btn.active{background:white;color:var(--accent);border-color:white;box-shadow:0 4px 15px rgba(0,0,0,0.08);transform:translateY(-2px)}
+
+.games-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;padding-bottom:60px}
+.g-card{border-radius:24px;background:rgba(255,255,255,0.45);backdrop-filter:blur(12px);border:2px solid rgba(255,255,255,0.8);overflow:hidden;cursor:pointer;transition:all 0.35s;position:relative}
+.g-card:hover{transform:translateY(-8px) scale(1.03);box-shadow:0 20px 40px rgba(0,0,0,0.12);border-color:white;z-index:5}
+.g-card-top{height:140px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;overflow:hidden}
+.g-card-top::before{content:'';position:absolute;inset:0;opacity:0.7;z-index:0}
+.g-card-top span{position:relative;z-index:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.2))}
+.g-card-bottom{padding:16px;background:rgba(255,255,255,0.5)}
+.g-card-bottom h3{font-size:1rem;font-weight:700;color:var(--t1);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-card-bottom p{font-size:0.78rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px}
+
+/* Color classes for game cards */
+.gc-purple .g-card-top::before{background:linear-gradient(135deg,#a18cd1,#fbc2eb)}
+.gc-green .g-card-top::before{background:linear-gradient(135deg,#43e97b,#38f9d7)}
+.gc-orange .g-card-top::before{background:linear-gradient(135deg,#f6d365,#fda085)}
+.gc-blue .g-card-top::before{background:linear-gradient(135deg,#84fab0,#8fd3f4)}
+.gc-red .g-card-top::before{background:linear-gradient(135deg,#ff0844,#ffb199)}
+.gc-dark .g-card-top::before{background:linear-gradient(135deg,#667eea,#764ba2)}
+.gc-teal .g-card-top::before{background:linear-gradient(135deg,#4facfe,#00f2fe)}
+.gc-pink .g-card-top::before{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.gc-gold .g-card-top::before{background:linear-gradient(135deg,#f6d365,#fda085)}
+.gc-mint .g-card-top::before{background:linear-gradient(135deg,#a1c4fd,#c2e9fb)}
+
+.no-results{text-align:center;padding:80px 20px;color:var(--t2);font-size:1.2rem;font-weight:600}
+.no-results i{font-size:3rem;display:block;margin-bottom:16px;opacity:0.5}
+
+/* GAME PLAYER */
+.game-player-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);animation:fadeIn 0.3s}
+.game-player-overlay.show{display:flex;align-items:center;justify-content:center}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.game-player-box{width:95%;max-width:1200px;height:85vh;background:rgba(255,255,255,0.95);border-radius:24px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(0,0,0,0.3)}
+.gp-header{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:rgba(255,255,255,0.9);border-bottom:1px solid rgba(0,0,0,0.08)}
+.gp-header h3{font-weight:700;color:var(--t1);font-size:1.1rem}
+.gp-controls{display:flex;gap:8px}
+.gp-controls button{padding:8px 16px;border-radius:12px;border:none;font-family:inherit;font-weight:600;font-size:0.85rem;cursor:pointer;transition:all 0.2s}
+.gp-close{background:#ff5c5c;color:white}
+.gp-close:hover{background:#ff3333}
+.gp-full{background:var(--accent);color:white}
+.gp-full:hover{background:#e07800}
+.gp-frame{flex:1;border:none;width:100%;background:white}
+
+/* SMART ASSISTANT PAGE */
+.smart-page{padding:110px 40px 40px;max-width:1000px;margin:0 auto;min-height:100vh}
+.smart-page h1{font-size:2.5rem;font-weight:900;color:white;text-shadow:0 4px 20px rgba(0,0,0,0.15);margin-bottom:8px}
+.smart-page .smart-sub{font-size:1.1rem;color:var(--t2);font-weight:500;margin-bottom:36px}
+.smart-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:40px}
+.smart-card{background:rgba(255,255,255,0.55);backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,0.8);border-radius:24px;padding:32px 24px;text-align:center;cursor:pointer;transition:all 0.35s;position:relative;overflow:hidden}
+.smart-card:hover{transform:translateY(-8px);box-shadow:0 20px 50px rgba(0,0,0,0.12);border-color:white;background:rgba(255,255,255,0.8)}
+.smart-card.selected{border-color:var(--accent);background:rgba(255,255,255,0.85);box-shadow:0 12px 40px rgba(255,140,0,0.2)}
+.smart-card .sc-icon{font-size:3rem;margin-bottom:16px;display:block}
+.smart-card h3{font-size:1.15rem;font-weight:700;color:var(--t1);margin-bottom:8px}
+.smart-card p{font-size:0.85rem;color:var(--t3);font-weight:500;line-height:1.5}
+.smart-card .sc-badge{position:absolute;top:12px;right:12px;padding:4px 12px;border-radius:50px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.sc-badge.ai{background:linear-gradient(135deg,#667eea,#764ba2);color:white}
+.sc-badge.tool{background:linear-gradient(135deg,#43e97b,#38f9d7);color:#1a2a4a}
+.sc-badge.scan{background:linear-gradient(135deg,#ff0844,#ffb199);color:white}
+
+.tool-area{display:none;animation:fadeIn 0.3s}
+.tool-area.active{display:block}
+
+/* AI Chat */
+.chat-box{background:rgba(255,255,255,0.6);backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,0.8);border-radius:24px;overflow:hidden}
+.chat-messages{height:400px;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:12px}
+.chat-msg{max-width:80%;padding:14px 20px;border-radius:20px;font-size:0.95rem;font-weight:500;line-height:1.6;animation:fadeIn 0.3s}
+.chat-msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;border-bottom-right-radius:6px}
+.chat-msg.bot{align-self:flex-start;background:white;color:var(--t1);border-bottom-left-radius:6px;box-shadow:0 4px 15px rgba(0,0,0,0.06)}
+.chat-msg.bot.typing{opacity:0.7}
+.chat-input-row{display:flex;gap:12px;padding:16px 20px;border-top:1px solid rgba(0,0,0,0.06);background:rgba(255,255,255,0.5)}
+.chat-input-row textarea{flex:1;border:2px solid rgba(0,0,0,0.08);border-radius:16px;padding:12px 20px;font-family:inherit;font-size:0.95rem;font-weight:500;outline:none;transition:border 0.3s;background:white;resize:none;min-height:48px;max-height:120px}
+.chat-input-row textarea:focus{border-color:var(--accent)}
+.chat-input-row button{padding:14px 28px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;font-family:inherit;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.3s;align-self:flex-end}
+.chat-input-row button:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(255,140,0,0.4)}
+
+.chat-modes{display:flex;gap:8px;padding:12px 20px;border-bottom:1px solid rgba(0,0,0,0.04);flex-wrap:wrap}
+.mode-btn{padding:7px 16px;border-radius:50px;border:2px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.7);font-family:inherit;font-weight:600;font-size:0.8rem;cursor:pointer;transition:all 0.3s;color:var(--t2);display:flex;align-items:center;gap:6px}
+.mode-btn:hover{background:white;transform:translateY(-1px)}
+.mode-btn.active{border-color:var(--accent);color:var(--accent);background:rgba(255,140,0,0.08)}
+.chat-msg.bot{white-space:pre-wrap}
+.chat-msg img{max-width:100%;max-height:200px;border-radius:12px;margin-top:8px;display:block}
+
+.img-upload-btn{width:44px;height:44px;border-radius:50%;border:2px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.7);color:var(--t2);font-size:1.1rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;align-self:flex-end;flex-shrink:0}
+.img-upload-btn:hover{background:white;color:var(--accent);border-color:var(--accent);transform:translateY(-1px)}
+
+.img-preview-strip{display:none;padding:8px 20px;gap:8px;border-top:1px solid rgba(0,0,0,0.04);background:rgba(255,255,255,0.3);flex-wrap:wrap;align-items:center}
+.img-preview-strip.show{display:flex}
+.img-preview-item{position:relative;border-radius:12px;overflow:hidden;border:2px solid rgba(0,0,0,0.08)}
+.img-preview-item img{height:60px;width:auto;display:block}
+.img-preview-remove{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;background:rgba(0,0,0,0.6);color:white;border:none;font-size:0.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.img-preview-remove:hover{background:#ff3333}
+.img-preview-label{font-size:0.78rem;color:var(--t3);font-weight:600;display:flex;align-items:center;gap:6px}
+
+/* Humanizer & Detector shared */
+.tool-box{background:rgba(255,255,255,0.6);backdrop-filter:blur(15px);border:2px solid rgba(255,255,255,0.8);border-radius:24px;padding:28px}
+.tool-box h3{font-size:1.2rem;font-weight:700;color:var(--t1);margin-bottom:6px}
+.tool-box .tool-desc{font-size:0.9rem;color:var(--t3);margin-bottom:20px;font-weight:500}
+.tool-box textarea{width:100%;min-height:180px;border:2px solid rgba(0,0,0,0.08);border-radius:16px;padding:16px 20px;font-family:inherit;font-size:0.95rem;font-weight:500;color:var(--t1);outline:none;resize:vertical;transition:border 0.3s;background:white}
+.tool-box textarea:focus{border-color:var(--accent)}
+.tool-box .tool-actions{display:flex;gap:12px;margin-top:16px;align-items:center}
+.tool-btn{padding:14px 32px;border-radius:50px;border:none;font-family:inherit;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.3s;display:inline-flex;align-items:center;gap:8px}
+.tool-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;box-shadow:0 8px 20px rgba(255,140,0,0.3)}
+.tool-btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,140,0,0.4)}
+.tool-btn.secondary{background:rgba(255,255,255,0.7);color:var(--t1);border:2px solid rgba(0,0,0,0.08)}
+.tool-btn.secondary:hover{background:white;transform:translateY(-2px)}
+.tool-result{margin-top:20px;padding:20px;background:white;border-radius:16px;border:2px solid rgba(0,0,0,0.06);font-size:0.95rem;line-height:1.7;color:var(--t1);display:none;animation:fadeIn 0.3s;font-weight:500}
+.tool-result.show{display:block}
+.tool-result h4{font-weight:700;margin-bottom:8px;color:var(--a1)}
+
+/* AI Detector meter */
+.detect-meter{height:12px;border-radius:50px;background:rgba(0,0,0,0.06);overflow:hidden;margin:12px 0}
+.detect-meter-fill{height:100%;border-radius:50px;transition:width 0.8s ease;background:linear-gradient(90deg,#43e97b,#f6d365,#ff0844)}
+.detect-labels{display:flex;justify-content:space-between;font-size:0.8rem;font-weight:600;color:var(--t3)}
+
+/* PROXY BROWSER */
+.proxy-page{position:relative;z-index:10;height:100vh;display:flex;flex-direction:column;padding-top:90px}
+.proxy-toolbar{display:flex;align-items:center;gap:10px;padding:10px 20px;background:rgba(255,255,255,0.65);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.8);flex-shrink:0}
+.proxy-nav-btns{display:flex;gap:4px}
+.proxy-nav-btn{width:36px;height:36px;border-radius:10px;border:none;background:rgba(255,255,255,0.6);color:var(--t2);font-size:0.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.proxy-nav-btn:hover{background:white;color:var(--accent);transform:scale(1.05)}
+.proxy-url-bar{flex:1;display:flex;align-items:center;background:white;border:2px solid rgba(0,0,0,0.08);border-radius:14px;padding:0 16px;gap:10px;transition:border 0.3s;height:42px}
+.proxy-url-bar:focus-within{border-color:var(--accent);box-shadow:0 4px 20px rgba(255,140,0,0.12)}
+.proxy-url-bar i{color:var(--t3);font-size:0.9rem;flex-shrink:0}
+.proxy-url-bar input{flex:1;border:none;background:none;font-family:inherit;font-size:0.9rem;font-weight:500;color:var(--t1);outline:none}
+.proxy-url-bar input::placeholder{color:var(--t3)}
+.proxy-go-btn{padding:10px 22px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;font-family:inherit;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.2s;flex-shrink:0}
+.proxy-go-btn:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(255,140,0,0.3)}
+.proxy-bookmarks{display:flex;gap:8px;padding:8px 20px;background:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.6);flex-shrink:0;flex-wrap:wrap}
+.proxy-bm{padding:5px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.7);background:rgba(255,255,255,0.5);font-family:inherit;font-weight:600;font-size:0.78rem;color:var(--t2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;text-decoration:none}
+.proxy-bm:hover{background:white;color:var(--accent);transform:translateY(-1px)}
+.proxy-frame-wrap{flex:1;position:relative;overflow:hidden;background:white}
+.proxy-frame-wrap iframe{width:100%;height:100%;border:none}
+.proxy-welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px}
+.proxy-welcome .pw-icon{font-size:5rem;margin-bottom:20px;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.1))}
+.proxy-welcome h2{font-size:2rem;font-weight:800;color:var(--t1);margin-bottom:8px}
+.proxy-welcome p{color:var(--t3);font-size:1rem;font-weight:500;max-width:400px}
+.proxy-welcome .pw-search{margin-top:28px;display:flex;gap:10px;width:100%;max-width:500px}
+.proxy-welcome .pw-search input{flex:1;border:2px solid rgba(0,0,0,0.08);border-radius:50px;padding:16px 28px;font-family:inherit;font-size:1rem;font-weight:500;outline:none;background:rgba(255,255,255,0.8);transition:border 0.3s}
+.proxy-welcome .pw-search input:focus{border-color:var(--accent)}
+.proxy-welcome .pw-search button{padding:16px 32px;border-radius:50px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent-light));color:white;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.3s}
+.proxy-welcome .pw-search button:hover{transform:scale(1.05)}
+</style>
+</head>
+<body>
+
+<div class="clouds-bg">
+    <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+    <div class="cloud c4"></div><div class="cloud c5"></div><div class="cloud c6"></div>
+</div>
+<div class="sparkles" id="sparkles"></div>
+
+<nav class="top-nav">
+    <div class="nav-brand">☁️ Paradise</div>
+    <div class="nav-links">
+        <button class="nav-item active" onclick="showPage('home')"><i class="fa-solid fa-house"></i> Home</button>
+        <button class="nav-item" onclick="showPage('games')"><i class="fa-solid fa-gamepad"></i> Games</button>
+        <button class="nav-item" onclick="showPage('smart')"><i class="fa-solid fa-robot"></i> Smart</button>
+        <button class="nav-item"><i class="fa-solid fa-layer-group"></i> Apps</button>
+        <button class="nav-item" onclick="showPage('proxy')"><i class="fa-solid fa-globe"></i> Proxy</button>
+    </div>
+    <div class="nav-actions">
+        <button class="action-btn"><i class="fa-brands fa-discord"></i></button>
+        <button class="action-btn"><i class="fa-solid fa-gear"></i></button>
+    </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page-section active">
+<main class="main-wrapper">
+    <div class="content-left">
+        <div class="version-badge">☁️ Version 5.0 Live</div>
+        <h1 class="main-title">Experience <br><span class="gradient-text">Paradise</span></h1>
+        <p class="subtitle">Your ultimate gateway to the heavens. Fast, beautiful, and completely reimagined to give you the perfect hub experience.</p>
+        <button class="primary-btn" onclick="showPage('games')">Browse Games <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="chips-container">
+            <div class="feature-chip"><i class="fa-solid fa-bolt"></i> Ultra Fast</div>
+            <div class="feature-chip"><i class="fa-solid fa-shield-halved"></i> Secure Proxy</div>
+            <div class="feature-chip" style="cursor:pointer" onclick="showPage('smart')"><i class="fa-solid fa-robot"></i> Smart Assistant</div>
+            <div class="feature-chip"><i class="fa-solid fa-gamepad"></i> 120+ Games</div>
+        </div>
+    </div>
+    <div class="content-right">
+        <div class="card-col col-1">
+            <div class="game-card" onclick="playGame('9.html','Sprunki')"><div class="card-bg bg-purple"></div><div class="card-overlay"></div><div class="card-icon">🎵</div><div class="card-info"><div class="card-title">Sprunki</div><div class="card-category">Music</div></div></div>
+            <div class="game-card" onclick="playGame('276.html','Drift Boss')"><div class="card-bg bg-orange"></div><div class="card-overlay"></div><div class="card-icon">🏎️</div><div class="card-info"><div class="card-title">Drift Boss</div><div class="card-category">Racing</div></div></div>
+        </div>
+        <div class="card-col col-2">
+            <div class="game-card" onclick="playGame('108.html','Slope')"><div class="card-bg bg-green"></div><div class="card-overlay"></div><div class="card-icon">🟢</div><div class="card-info"><div class="card-title">Slope</div><div class="card-category">Skill</div></div></div>
+            <div class="game-card" onclick="playGame('33.html','Retro Bowl')"><div class="card-bg bg-dark"></div><div class="card-overlay"></div><div class="card-icon">🏈</div><div class="card-info"><div class="card-title">Retro Bowl</div><div class="card-category">Sports</div></div></div>
+        </div>
+        <div class="card-col col-3">
+            <div class="game-card" onclick="playGame('130.html','Minecraft')"><div class="card-bg bg-blue"></div><div class="card-overlay"></div><div class="card-icon">⛏️</div><div class="card-info"><div class="card-title">Minecraft</div><div class="card-category">Sandbox</div></div></div>
+            <div class="game-card" onclick="playGame('465.html','Cuphead')"><div class="card-bg bg-red"></div><div class="card-overlay"></div><div class="card-icon">☕</div><div class="card-info"><div class="card-title">Cuphead</div><div class="card-category">Action</div></div></div>
+        </div>
+    </div>
+</main>
+</div>
+
+<!-- GAMES PAGE -->
+<div id="page-games" class="page-section">
+<div class="games-page">
+    <div class="games-header">
+        <h1>☁️ Game <span>Library</span></h1>
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="gameSearch" placeholder="Search games..." oninput="filterGames()">
+        </div>
+    </div>
+    <div class="cat-filters" id="catFilters"></div>
+    <div class="games-grid" id="gamesGrid"></div>
+</div>
+</div>
+
+<!-- SMART ASSISTANT PAGE -->
+<div id="page-smart" class="page-section">
+<div class="smart-page">
+    <h1>🤖 Smart <span style="color:var(--accent)">Assistant</span></h1>
+    <p class="smart-sub">Your AI-powered toolkit — chat, humanize, and detect.</p>
+    <div class="smart-cards">
+        <div class="smart-card selected" onclick="selectTool('chat')">
+            <span class="sc-badge ai">AI</span>
+            <span class="sc-icon">💬</span>
+            <h3>AI Chat</h3>
+            <p>Write essays, answer tests, explain topics — powered by real AI</p>
+        </div>
+        <div class="smart-card" onclick="selectTool('humanizer')">
+            <span class="sc-badge tool">Tool</span>
+            <span class="sc-icon">✍️</span>
+            <h3>Humanizer</h3>
+            <p>Rewrite AI-generated text to sound more natural and human</p>
+        </div>
+        <div class="smart-card" onclick="selectTool('detector')">
+            <span class="sc-badge scan">Scan</span>
+            <span class="sc-icon">🔍</span>
+            <h3>AI Detector</h3>
+            <p>Analyze text to determine if it was written by AI or a human</p>
+        </div>
+    </div>
+
+    <!-- AI Chat Tool -->
+    <div class="tool-area active" id="tool-chat">
+        <div class="chat-box">
+            <div class="chat-modes">
+                <button class="mode-btn active" onclick="setMode('general')"><i class="fa-solid fa-comments"></i> General</button>
+                <button class="mode-btn" onclick="setMode('essay')"><i class="fa-solid fa-file-lines"></i> Essay Writer</button>
+                <button class="mode-btn" onclick="setMode('test')"><i class="fa-solid fa-clipboard-check"></i> Test Answers</button>
+                <button class="mode-btn" onclick="setMode('explain')"><i class="fa-solid fa-lightbulb"></i> Explain</button>
+                <button class="mode-btn" onclick="setMode('rewrite')"><i class="fa-solid fa-pen-nib"></i> Rewrite</button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg bot">Hey! I'm Paradise AI ☁️ I can write essays, answer test questions, explain topics, and more. Pick a mode above or just ask me anything!</div>
+            </div>
+            <div class="img-preview-strip" id="imgPreview">
+                <span class="img-preview-label"><i class="fa-solid fa-image"></i> Attached:</span>
+            </div>
+            <div class="chat-input-row">
+                <button class="img-upload-btn" onclick="document.getElementById('imgFileInput').click()" title="Upload image"><i class="fa-solid fa-image"></i></button>
+                <input type="file" id="imgFileInput" accept="image/*" multiple style="display:none" onchange="handleImageFiles(this.files)">
+                <textarea id="chatInput" placeholder="Ask me anything... (paste images with Ctrl+V)" rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+                <button onclick="sendChat()"><i class="fa-solid fa-paper-plane"></i> Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Humanizer Tool -->
+    <div class="tool-area" id="tool-humanizer">
+        <div class="tool-box">
+            <h3><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent)"></i> Text Humanizer</h3>
+            <p class="tool-desc">Paste AI-generated text below and we'll rewrite it to sound more natural, casual, and human-like.</p>
+            <textarea id="humanInput" placeholder="Paste your AI-generated text here..."></textarea>
+            <div class="tool-actions">
+                <button class="tool-btn primary" onclick="humanizeText()"><i class="fa-solid fa-wand-magic-sparkles"></i> Humanize</button>
+                <button class="tool-btn secondary" onclick="document.getElementById('humanInput').value='';document.getElementById('humanResult').classList.remove('show')"><i class="fa-solid fa-trash"></i> Clear</button>
+            </div>
+            <div class="tool-result" id="humanResult"></div>
+        </div>
+    </div>
+
+    <!-- AI Detector Tool -->
+    <div class="tool-area" id="tool-detector">
+        <div class="tool-box">
+            <h3><i class="fa-solid fa-magnifying-glass-chart" style="color:#ff0844"></i> AI Detector</h3>
+            <p class="tool-desc">Paste text below to analyze whether it was written by AI or a human.</p>
+            <textarea id="detectInput" placeholder="Paste text to analyze..."></textarea>
+            <div class="tool-actions">
+                <button class="tool-btn primary" onclick="detectAI()" style="background:linear-gradient(135deg,#ff0844,#ffb199)"><i class="fa-solid fa-microscope"></i> Analyze</button>
+                <button class="tool-btn secondary" onclick="document.getElementById('detectInput').value='';document.getElementById('detectResult').classList.remove('show')"><i class="fa-solid fa-trash"></i> Clear</button>
+            </div>
+            <div class="tool-result" id="detectResult"></div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- PROXY PAGE -->
+<div id="page-proxy" class="page-section">
+<div class="proxy-page">
+    <div class="proxy-toolbar">
+        <div class="proxy-nav-btns">
+            <button class="proxy-nav-btn" onclick="proxyBack()" title="Back"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="proxy-nav-btn" onclick="proxyForward()" title="Forward"><i class="fa-solid fa-arrow-right"></i></button>
+            <button class="proxy-nav-btn" onclick="proxyRefresh()" title="Refresh"><i class="fa-solid fa-rotate-right"></i></button>
+            <button class="proxy-nav-btn" onclick="proxyHome()" title="Home"><i class="fa-solid fa-house"></i></button>
+        </div>
+        <div class="proxy-url-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="proxyUrlInput" placeholder="Search DuckDuckGo or enter a URL..." onkeydown="if(event.key==='Enter')proxyGo()">
+        </div>
+        <button class="proxy-go-btn" onclick="proxyGo()"><i class="fa-solid fa-arrow-right"></i> Go</button>
+    </div>
+    <div class="proxy-bookmarks">
+        <a class="proxy-bm" onclick="proxyLoad('https://www.google.com')">🔍 Google</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://www.youtube.com')">▶️ YouTube</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://en.wikipedia.org')">📚 Wikipedia</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://www.reddit.com')">🪧 Reddit</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://discord.com/app')">💬 Discord</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://duckduckgo.com')">🦆 DuckDuckGo</a>
+        <a class="proxy-bm" onclick="proxyLoad('https://www.coolmathgames.com')">🎲 CoolMath</a>
+    </div>
+    <div class="proxy-frame-wrap">
+        <div class="proxy-welcome" id="proxyWelcome">
+            <div class="pw-icon">🌐</div>
+            <h2>Paradise Proxy</h2>
+            <p>Browse the web securely right inside Paradise. Powered by Ultraviolet & Scramjet, blocking extensions and tracking.</p>
+            <div class="pw-search" style="margin-top:24px;width:100%;max-width:500px">
+                <input type="text" id="proxyHomeSearch" placeholder="Search the web or enter a URL..." onkeydown="if(event.key==='Enter')proxyHomeGo()">
+                <button onclick="proxyHomeGo()"><i class="fa-solid fa-magnifying-glass"></i> Go</button>
+            </div>
+            <div id="sw-status" style="margin-top:20px;font-size:0.8rem;color:var(--t3);font-weight:600">Checking proxy engine...</div>
+        </div>
+        <iframe id="proxyFrame" style="display:none" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" allowfullscreen></iframe>
+    </div>
+</div>
+</div>
+
+<!-- GAME PLAYER OVERLAY -->
+<div class="game-player-overlay" id="gamePlayer">
+    <div class="game-player-box">
+        <div class="gp-header">
+            <h3 id="gpTitle">Game</h3>
+            <div class="gp-controls">
+                <button class="gp-full" onclick="fullscreenGame()"><i class="fa-solid fa-expand"></i> Fullscreen</button>
+                <button class="gp-close" onclick="closeGame()"><i class="fa-solid fa-xmark"></i> Close</button>
+            </div>
+        </div>
+        <iframe class="gp-frame" id="gpFrame" allowfullscreen></iframe>
+    </div>
+</div>
+
+<script src="games-data.js"></script>
+<script>
+// Sparkles
+const sp=document.getElementById('sparkles');
+for(let i=0;i<40;i++){const s=document.createElement('div');s.className='spark';s.style.width=Math.random()*4+2+'px';s.style.height=s.style.width;s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';s.style.animationDelay=Math.random()*3+'s';sp.appendChild(s)}
+
+// Page Navigation
+function showPage(page){
+    document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+page).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n=>{if(n.textContent.trim().toLowerCase().includes(page))n.classList.add('active')});
+    if(page==='games')renderGames();
+    if(page==='smart')document.getElementById('chatInput')?.focus();
+}
+
+// Color rotation
+const colors=['gc-purple','gc-green','gc-orange','gc-blue','gc-red','gc-dark','gc-teal','gc-pink','gc-gold','gc-mint'];
+let activeCat='All';
+
+// Build category filters
+function buildFilters(){
+    const cats=['All',...new Set(GAMES_DATA.map(g=>g.cat))].sort((a,b)=>a==='All'?-1:b==='All'?1:a.localeCompare(b));
+    const el=document.getElementById('catFilters');
+    el.innerHTML=cats.map(c=>`<button class="cat-btn${c==='All'?' active':''}" onclick="filterCat('${c}')">${c}</button>`).join('');
+}
+
+function filterCat(cat){
+    activeCat=cat;
+    document.querySelectorAll('.cat-btn').forEach(b=>{b.classList.toggle('active',b.textContent===cat)});
+    renderGames();
+}
+
+function filterGames(){renderGames()}
+
+function renderGames(){
+    const q=document.getElementById('gameSearch').value.toLowerCase();
+    let filtered=GAMES_DATA.filter(g=>{
+        const matchSearch=g.name.toLowerCase().includes(q);
+        const matchCat=activeCat==='All'||g.cat===activeCat;
+        return matchSearch&&matchCat;
+    });
+    const grid=document.getElementById('gamesGrid');
+    if(!filtered.length){grid.innerHTML='<div class="no-results"><i class="fa-solid fa-cloud-moon"></i>No games found</div>';return}
+    grid.innerHTML=filtered.map((g,i)=>`
+        <div class="g-card ${colors[i%colors.length]}" onclick="playGame('${g.file}','${g.name.replace(/'/g,"\\'")}')">
+            <div class="g-card-top"><span>${g.icon}</span></div>
+            <div class="g-card-bottom"><h3>${g.name}</h3><p>${g.cat}</p></div>
+        </div>`).join('');
+}
+
+// Game Player
+const GAME_BASE='../package/html-main/';
+function playGame(file,name){
+    document.getElementById('gpTitle').textContent=name;
+    document.getElementById('gpFrame').src=GAME_BASE+file;
+    document.getElementById('gamePlayer').classList.add('show');
+}
+function closeGame(){
+    document.getElementById('gamePlayer').classList.remove('show');
+    document.getElementById('gpFrame').src='';
+}
+function fullscreenGame(){
+    const f=document.getElementById('gpFrame');
+    if(f.requestFullscreen)f.requestFullscreen();
+    else if(f.webkitRequestFullscreen)f.webkitRequestFullscreen();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGame()});
+
+buildFilters();
+
+// ====== SMART ASSISTANT ======
+function selectTool(tool){
+    document.querySelectorAll('.smart-card').forEach((c,i)=>c.classList.toggle('selected',['chat','humanizer','detector'][i]===tool));
+    document.querySelectorAll('.tool-area').forEach(t=>t.classList.remove('active'));
+    document.getElementById('tool-'+tool).classList.add('active');
+}
+
+// ====== AI CHAT — Pollinations.ai (free, no key) ======
+let chatMode='general';
+let chatHistory=[];
+let pendingImages=[];  // base64 images to send
+
+const SYSTEM_PROMPTS={
+    general:'You are Paradise AI, a smart and friendly assistant. Give helpful, detailed answers. Write naturally like a real person — use contractions, vary sentence length, and be conversational. Never say you are an AI unless asked.',
+    essay:'You are an expert essay writer. When the user gives a topic, write a full, well-structured essay with an introduction, body paragraphs with supporting details, and a conclusion. Write in a natural human voice — use contractions, personal tone, varied sentence lengths, occasional rhetorical questions, and transitions that feel organic. Avoid robotic or formulaic language. The essay should be detailed and long (at least 4-5 paragraphs). Do NOT use bullet points or lists — write in flowing prose.',
+    test:'You are a brilliant student answering test/exam questions. Give clear, accurate, and complete answers. For multiple choice, state the correct answer and explain why. For short answer or essay questions, write thorough responses that would earn full marks. Write naturally like a smart student would — use contractions, sound confident but not robotic.',
+    explain:'You are a patient and clear teacher. Explain concepts in a way that\'s easy to understand. Use analogies, examples, and break things down step by step. Write conversationally like you\'re talking to a friend — not like a textbook.',
+    rewrite:'You are a writing assistant. The user will give you text and you should rewrite it to sound more natural and human. Use contractions, vary sentence structure, add personality, remove overly formal words, and make it flow better. Keep the same meaning but make it sound like a real person wrote it. Return ONLY the rewritten text.'
+};
+
+function setMode(mode){
+    chatMode=mode;
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.remove('active'));
+    event.target.closest('.mode-btn').classList.add('active');
+    const labels={general:'General chat mode active',essay:'📝 Essay Writer mode — give me a topic and I\'ll write a full essay!',test:'📋 Test Answer mode — paste your questions and I\'ll answer them!',explain:'💡 Explain mode — ask me to explain any concept simply!',rewrite:'✍️ Rewrite mode — paste text and I\'ll make it sound human!'};
+    const msgs=document.getElementById('chatMessages');
+    msgs.innerHTML+=`<div class="chat-msg bot" style="opacity:0.7;font-style:italic">${labels[mode]}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+}
+
+async function sendChat(){
+    const input=document.getElementById('chatInput');
+    const msg=input.value.trim();
+    const hasImages=pendingImages.length>0;
+    if(!msg&&!hasImages)return;
+    const msgs=document.getElementById('chatMessages');
+
+    // Show user message with any attached images
+    let userHTML='';
+    if(msg) userHTML+=escHTML(msg);
+    if(hasImages) userHTML+=pendingImages.map(src=>`<img src="${src}">`).join('');
+    msgs.innerHTML+=`<div class="chat-msg user">${userHTML}</div>`;
+    input.value='';
+    input.style.height='auto';
+    const typingId='typing_'+Date.now();
+    msgs.innerHTML+=`<div class="chat-msg bot typing" id="${typingId}"><i class="fa-solid fa-circle-notch fa-spin"></i> Generating response...</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+
+    // Build message content (text + images)
+    let userContent;
+    if(hasImages){
+        userContent=[];
+        if(msg) userContent.push({type:'text',text:msg});
+        pendingImages.forEach(src=>{
+            userContent.push({type:'image_url',image_url:{url:src}});
+        });
+    } else {
+        userContent=msg;
+    }
+    chatHistory.push({role:'user',content:userContent});
+    clearImagePreview();
+    if(chatHistory.length>20) chatHistory=chatHistory.slice(-20);
+
+    const sysPrompt=SYSTEM_PROMPTS[chatMode]||SYSTEM_PROMPTS.general;
+    const apiMessages=[{role:'system',content:sysPrompt},...chatHistory];
+
+    try{
+        const resp=await fetch('https://text.pollinations.ai/',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                messages:apiMessages,
+                model:hasImages?'openai':'openai',
+                temperature:0.8
+            })
+        });
+        const answer=await resp.text();
+        document.getElementById(typingId)?.remove();
+        chatHistory.push({role:'assistant',content:answer});
+        msgs.innerHTML+=`<div class="chat-msg bot">${formatResponse(answer)}</div>`;
+    }catch(e){
+        document.getElementById(typingId)?.remove();
+        msgs.innerHTML+=`<div class="chat-msg bot" style="color:#ff5c5c">⚠️ Connection error. Please try again.</div>`;
+    }
+    msgs.scrollTop=msgs.scrollHeight;
+}
+
+function formatResponse(text){
+    // Basic markdown-like formatting
+    let t=escHTML(text);
+    t=t.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+    t=t.replace(/\*(.+?)\*/g,'<em>$1</em>');
+    t=t.replace(/^### (.+)$/gm,'<strong style="font-size:1.05rem">$1</strong>');
+    t=t.replace(/^## (.+)$/gm,'<strong style="font-size:1.1rem">$1</strong>');
+    t=t.replace(/^# (.+)$/gm,'<strong style="font-size:1.2rem">$1</strong>');
+    return t;
+}
+
+function escHTML(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+// Auto-resize textarea
+document.getElementById('chatInput')?.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'});
+
+// ====== IMAGE HANDLING ======
+function handleImageFiles(files){
+    Array.from(files).forEach(file=>{
+        if(!file.type.startsWith('image/'))return;
+        const reader=new FileReader();
+        reader.onload=e=>addImageToPreview(e.target.result);
+        reader.readAsDataURL(file);
+    });
+    document.getElementById('imgFileInput').value='';
+}
+
+function addImageToPreview(base64){
+    pendingImages.push(base64);
+    renderImagePreview();
+}
+
+function removeImage(idx){
+    pendingImages.splice(idx,1);
+    renderImagePreview();
+}
+
+function renderImagePreview(){
+    const strip=document.getElementById('imgPreview');
+    if(!pendingImages.length){strip.classList.remove('show');return}
+    strip.classList.add('show');
+    strip.innerHTML='<span class="img-preview-label"><i class="fa-solid fa-image"></i> Attached:</span>';
+    pendingImages.forEach((src,i)=>{
+        strip.innerHTML+=`<div class="img-preview-item"><img src="${src}"><button class="img-preview-remove" onclick="removeImage(${i})">&times;</button></div>`;
+    });
+}
+
+function clearImagePreview(){
+    pendingImages=[];
+    const strip=document.getElementById('imgPreview');
+    strip.classList.remove('show');
+    strip.innerHTML='<span class="img-preview-label"><i class="fa-solid fa-image"></i> Attached:</span>';
+}
+
+// Paste images from clipboard
+document.getElementById('chatInput')?.addEventListener('paste',function(e){
+    const items=e.clipboardData?.items;
+    if(!items)return;
+    for(const item of items){
+        if(item.type.startsWith('image/')){
+            e.preventDefault();
+            const file=item.getAsFile();
+            const reader=new FileReader();
+            reader.onload=ev=>addImageToPreview(ev.target.result);
+            reader.readAsDataURL(file);
+        }
+    }
+});
+
+// Humanizer
+function humanizeText(){
+    const input=document.getElementById('humanInput').value.trim();
+    if(!input){alert('Please paste some text first!');return}
+    const result=document.getElementById('humanResult');
+    result.innerHTML='<h4><i class="fa-solid fa-spinner fa-spin"></i> Humanizing...</h4>';
+    result.classList.add('show');
+    setTimeout(()=>{
+        const humanized=applyHumanize(input);
+        result.innerHTML=`<h4>✍️ Humanized Version</h4><p>${escHTML(humanized)}</p><br><button class="tool-btn secondary" onclick="navigator.clipboard.writeText(document.getElementById('humanResult').querySelector('p').textContent)"><i class="fa-solid fa-copy"></i> Copy</button>`;
+    },1200);
+}
+
+function applyHumanize(text){
+    let t=text;
+    // Break up overly formal patterns
+    t=t.replace(/\bFurthermore,?\s*/gi,()=>pick(['Also, ','Plus, ','On top of that, ']));
+    t=t.replace(/\bMoreover,?\s*/gi,()=>pick(['Also, ','And, ','What\'s more, ']));
+    t=t.replace(/\bIn conclusion,?\s*/gi,()=>pick(['So basically, ','All in all, ','To wrap up, ']));
+    t=t.replace(/\bIt is important to note that\s*/gi,()=>pick(['Worth noting — ','Keep in mind, ','One thing to note: ']));
+    t=t.replace(/\bIn today'?s (world|society|age|era)/gi,()=>pick(['These days','Nowadays','Right now']));
+    t=t.replace(/\bUtilize/gi,'use');
+    t=t.replace(/\bAssist/gi,'help');
+    t=t.replace(/\bPurchase/gi,'buy');
+    t=t.replace(/\bCommence/gi,'start');
+    t=t.replace(/\bTerminate/gi,'end');
+    t=t.replace(/\bSubsequently/gi,()=>pick(['Then','After that','Next']));
+    t=t.replace(/\bNevertheless/gi,()=>pick(['Still','But','Even so']));
+    t=t.replace(/\bAdditionally,?\s*/gi,()=>pick(['Also, ','Plus, ','And ']));
+    t=t.replace(/\bConsequently,?\s*/gi,()=>pick(['So, ','Because of that, ']));
+    t=t.replace(/\bHowever,/gi,()=>pick(['But,','Though,','That said,']));
+    t=t.replace(/\bTherefore,/gi,()=>pick(['So,','Because of this,']));
+    // Add contractions
+    t=t.replace(/\bdo not\b/gi,"don't").replace(/\bcan not\b/gi,"can't").replace(/\bcannot\b/gi,"can't");
+    t=t.replace(/\bwill not\b/gi,"won't").replace(/\bit is\b/gi,"it's").replace(/\bthat is\b/gi,"that's");
+    t=t.replace(/\bthey are\b/gi,"they're").replace(/\bwe are\b/gi,"we're").replace(/\bI am\b/gi,"I'm");
+    return t;
+}
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+// AI Detector
+function detectAI(){
+    const input=document.getElementById('detectInput').value.trim();
+    if(!input){alert('Please paste some text first!');return}
+    const result=document.getElementById('detectResult');
+    result.innerHTML='<h4><i class="fa-solid fa-spinner fa-spin"></i> Analyzing...</h4>';
+    result.classList.add('show');
+    setTimeout(()=>{
+        const score=analyzeAI(input);
+        const pct=Math.round(score*100);
+        const label=pct>70?'Likely AI-Generated':pct>40?'Mixed / Uncertain':'Likely Human-Written';
+        const color=pct>70?'#ff0844':pct>40?'#f6a623':'#43e97b';
+        result.innerHTML=`
+            <h4>🔍 Analysis Result</h4>
+            <div style="text-align:center;margin:16px 0">
+                <div style="font-size:3rem;font-weight:900;color:${color}">${pct}%</div>
+                <div style="font-size:1.1rem;font-weight:700;color:${color};margin-top:4px">${label}</div>
+            </div>
+            <div class="detect-meter"><div class="detect-meter-fill" style="width:${pct}%"></div></div>
+            <div class="detect-labels"><span>Human</span><span>Mixed</span><span>AI</span></div>
+            <p style="margin-top:16px;color:var(--t3);font-size:0.85rem">Based on pattern analysis of vocabulary, sentence structure, and stylistic markers. Word count: ${input.split(/\s+/).length}</p>`;
+    },1500);
+}
+
+function analyzeAI(text){
+    let score=0, checks=0;
+    const words=text.split(/\s+/);
+    const sentences=text.split(/[.!?]+/).filter(s=>s.trim());
+    // Check for AI-typical words
+    const aiWords=['furthermore','moreover','additionally','consequently','nevertheless','comprehensive','facilitate','utilize','implement','leverage','delve','tapestry','testament','underpinned','multifaceted','pivotal','intricate','nuanced','streamline','foster','crucial','essential','significant','paradigm','innovative','robust','scalable','holistic','synergy'];
+    const aiCount=words.filter(w=>aiWords.includes(w.toLowerCase().replace(/[^a-z]/g,''))).length;
+    score+=Math.min(aiCount/words.length*30,0.3); checks++;
+    // Sentence length uniformity (AI tends to be uniform)
+    if(sentences.length>2){
+        const lens=sentences.map(s=>s.trim().split(/\s+/).length);
+        const avg=lens.reduce((a,b)=>a+b,0)/lens.length;
+        const variance=lens.reduce((a,l)=>a+Math.pow(l-avg,2),0)/lens.length;
+        const cv=Math.sqrt(variance)/avg;
+        if(cv<0.3)score+=0.25;
+        else if(cv<0.5)score+=0.1;
+        checks++;
+    }
+    // Lack of contractions
+    const contractions=(text.match(/\b\w+'\w+\b/g)||[]).length;
+    if(contractions/words.length<0.01&&words.length>20)score+=0.2;
+    checks++;
+    // Overly perfect punctuation
+    const commaRatio=(text.match(/,/g)||[]).length/sentences.length;
+    if(commaRatio>1.5)score+=0.15;
+    checks++;
+    // List patterns
+    if(text.match(/\b(firstly|secondly|thirdly|in conclusion|to summarize)\b/gi))score+=0.15;
+    checks++;
+    return Math.min(Math.max(score,0.05),0.98);
+}
+
+// ====== PROXY BROWSER (Ultraviolet / Scramjet) ======
+let proxyHistory=[];
+let proxyHistoryIdx=-1;
+let swRegistered=false;
+
+// Register the Service Worker on load
+if ('serviceWorker' in navigator) {
+    if (window.location.protocol === 'file:') {
+        document.getElementById('sw-status').innerHTML = '<span style="color:#ff5c5c">⚠️ Proxy cannot run on file:// URLs. Please host this site on a server (e.g. localhost or Netlify).</span>';
+    } else {
+        navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(() => {
+            swRegistered = true;
+            document.getElementById('sw-status').innerHTML = '<span style="color:#43e97b"><i class="fa-solid fa-check"></i> Proxy engine ready</span>';
+        }).catch(err => {
+            console.error(err);
+            document.getElementById('sw-status').innerHTML = '<span style="color:#ff5c5c">⚠️ Proxy engine failed to start.</span>';
+        });
+    }
+} else {
+    document.getElementById('sw-status').innerHTML = '<span style="color:#ff5c5c">⚠️ Your browser does not support Service Workers.</span>';
+}
+
+function isURL(str){
+    return /^(https?:\/\/)/i.test(str) || /^[a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}/i.test(str);
+}
+
+function normalizeURL(str){
+    str=str.trim();
+    if(!/^https?:\/\//i.test(str) && /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}/i.test(str)) str='https://'+str;
+    return str;
+}
+
+function proxyGo(){
+    const input=document.getElementById('proxyUrlInput').value.trim();
+    if(!input)return;
+    if(isURL(input)){
+        proxyLoad(normalizeURL(input));
+    } else {
+        proxyLoad('https://duckduckgo.com/?q='+encodeURIComponent(input));
+    }
+}
+
+function proxyHomeGo(){
+    const input=document.getElementById('proxyHomeSearch').value.trim();
+    if(!input)return;
+    if(isURL(input)){
+        proxyLoad(normalizeURL(input));
+    } else {
+        proxyLoad('https://duckduckgo.com/?q='+encodeURIComponent(input));
+    }
+}
+
+function proxyLoad(url){
+    if(!swRegistered && window.location.protocol !== 'file:') {
+        alert('Proxy engine is still starting. Please wait a second and try again.');
+        return;
+    }
+    const frame=document.getElementById('proxyFrame');
+    const welcome=document.getElementById('proxyWelcome');
+    welcome.style.display='none';
+    frame.style.display='block';
+    
+    // Use the UV config to route the URL through the proxy
+    const proxyUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+    frame.src = proxyUrl;
+    
+    document.getElementById('proxyUrlInput').value=url;
+    if(proxyHistoryIdx<proxyHistory.length-1){
+        proxyHistory=proxyHistory.slice(0,proxyHistoryIdx+1);
+    }
+    proxyHistory.push(url);
+    proxyHistoryIdx=proxyHistory.length-1;
+}
+
+function proxyBack(){
+    if(proxyHistoryIdx>0){
+        proxyHistoryIdx--;
+        const url=proxyHistory[proxyHistoryIdx];
+        document.getElementById('proxyFrame').src = __uv$config.prefix + __uv$config.encodeUrl(url);
+        document.getElementById('proxyUrlInput').value=url;
+    }
+}
+
+function proxyForward(){
+    if(proxyHistoryIdx<proxyHistory.length-1){
+        proxyHistoryIdx++;
+        const url=proxyHistory[proxyHistoryIdx];
+        document.getElementById('proxyFrame').src = __uv$config.prefix + __uv$config.encodeUrl(url);
+        document.getElementById('proxyUrlInput').value=url;
+    }
+}
+
+function proxyRefresh(){
+    const frame=document.getElementById('proxyFrame');
+    if(frame.src) frame.src=frame.src;
+}
+
+function proxyHome(){
+    document.getElementById('proxyFrame').style.display='none';
+    document.getElementById('proxyFrame').src='';
+    document.getElementById('proxyWelcome').style.display='flex';
+    document.getElementById('proxyUrlInput').value='';
+}
+</script>
+</body>
+</html>
